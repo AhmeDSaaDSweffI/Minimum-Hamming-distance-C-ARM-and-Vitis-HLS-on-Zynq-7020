@@ -1,0 +1,526 @@
+% ============================================================================
+%  Problem 1 - minimum Hamming distance: processing time vs. memory size
+%  IEEE conference format (IEEEtran, A4)
+%
+%  Overleaf : New Project > Upload Project > overleaf_project.zip
+%             (this file + figures/). Compiler: pdfLaTeX.
+%  Figures  : figures/wave_v1.png, wave_v2.png  RTL simulation (Icarus Verilog),
+%                                               made by sim/run_icarus.bat
+%             figures/bd_v2.pdf                 Vivado block design (version 2;
+%                                               figures/bd_v1.pdf is version 1)
+%             A missing figure is printed as a framed box, so the file always
+%             compiles.
+% ============================================================================
+\documentclass[conference,a4paper]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{cite}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{array,booktabs,tabularx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[scaled=0.95,varqu,varl]{inconsolata}
+\usepackage{url}
+
+\definecolor{codebg}{HTML}{F6F8FA}
+\definecolor{coderule}{HTML}{D0D7DE}
+\definecolor{codekw}{HTML}{1F4E79}
+\colorlet{codecomment}{black!55}
+\colorlet{codenumber}{black!45}
+
+\lstset{language=C, morekeywords={size_t},
+  basicstyle=\ttfamily\fontsize{6.4}{7.3}\selectfont,
+  keywordstyle=\color{codekw}\bfseries,
+  commentstyle=\color{codecomment},
+  backgroundcolor=\color{codebg},
+  frame=single, rulecolor=\color{coderule}, framerule=0.4pt, framesep=2pt,
+  numbers=left, numberstyle=\tiny\color{codenumber}, numbersep=4pt,
+  xleftmargin=10pt, breaklines=true,
+  postbreak=\mbox{\textcolor{codenumber}{\fontsize{7}{8}\selectfont$\hookrightarrow$}\space},
+  columns=fullflexible, keepspaces=true, showstringspaces=false,
+  tabsize=4, upquote=true, aboveskip=4pt, belowskip=2pt}
+% IEEEtran's captions add no space below them; keep the listing frame clear of
+% its caption
+\makeatletter
+\def\lst@makecaption#1#2{\@makecaption{#1}{#2}\vskip 4pt}
+\makeatother
+
+\newcommand{\code}[1]{\texttt{#1}}
+% picture figures/<name>.pdf|.png|.jpg if it exists, a framed box otherwise:
+% name, width, maximum height, text of the box
+\newcommand{\figorbox}[4]{%
+  \IfFileExists{#1.pdf}{\includegraphics[width=#2,height=#3,keepaspectratio]{#1.pdf}}{%
+  \IfFileExists{#1.png}{\includegraphics[width=#2,height=#3,keepaspectratio]{#1.png}}{%
+  \IfFileExists{#1.jpg}{\includegraphics[width=#2,height=#3,keepaspectratio]{#1.jpg}}{%
+  \fbox{\parbox[c][#3][c]{\dimexpr#2-2\fboxsep-2\fboxrule\relax}{\centering\small #4}}}}}}
+
+\begin{document}
+
+\title{Time--Memory Trade-off in Computing the Minimum Hamming Distance of
+32-Bit Words: Brute Force versus Sort-and-Search}
+
+\author{\IEEEauthorblockN{Ahmed Saad Sweffi}
+\IEEEauthorblockA{Egypt-Japan University of Science and Technology (E-JUST), Alexandria, Egypt\\
+ahmed.abdelgaber@ejust.edu.eg}}
+
+\maketitle
+
+\begin{abstract}
+The task was to write a C function that returns the minimum Hamming distance
+between the 32-bit words of an array, keeping both the processing time and the
+memory size small. Since these goals conflict, I wrote two versions. Version~1
+compares every pair of words and needs no extra memory. Version~2 sorts a copy
+of the array, searches for pairs at distance 0 and 1, and only then compares
+pairs, stopping at the smallest distance still possible. I ran both in C on a PC
+and on a Zynq-7020, as ARM Cortex-A9 software and as Vitis HLS cores, and they
+agree on every test. On 5,000 words, version~2 is 51 times faster on the PC, 37
+times on the ARM and 7.8 times as an FPGA core, while version~1 needs no extra
+heap, 53 times less code and data on the ARM and 4.7 times fewer LUTs.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Hamming distance, time--memory trade-off, sorting, binary search, popcount,
+Zynq-7000, Vitis HLS, FPGA
+\end{IEEEkeywords}
+
+% ============================================================================
+\section{Introduction}
+The task I worked on was the following:
+\begin{quote}\itshape
+``Write a C function that computes the minimum Hamming distance between the
+32-bit words of an array, and optimize the processing time and the memory size
+required to compute the result as much as you can.''
+\end{quote}
+The function has a fixed prototype:
+\begin{lstlisting}[numbers=none,frame=none,backgroundcolor={},xleftmargin=0pt,basicstyle=\ttfamily\footnotesize]
+int min_Hamming(unsigned int tab[], unsigned int tab_size);
+\end{lstlisting}
+The Hamming distance between two words is the number of bit positions where
+they differ, which is the number of 1-bits in their XOR~\cite{hamming}. The
+function returns the smallest such distance over all pairs of words in
+\code{tab}, a value from 0 to 32, or $-1$ when \code{tab} holds fewer than two
+words.
+
+The last part of the task is the hard one, because time and memory pull in
+opposite directions: the fast way to find close words is to build extra data,
+such as a sorted copy of the array, while the smallest program compares the
+words where they are. A single version would end up somewhere in between, so I
+wrote two and measured both goals for each: version~1
+(\code{min\_hamming\_v1.c}) aims at the smallest memory and version~2
+(\code{min\_hamming\_v2.c}) at the shortest time.
+
+I tested both versions on two platforms: in C on a PC, and on a Zynq-7020 SoC
+(XC7Z020-1), where each version runs as bare-metal software on the ARM
+Cortex-A9 and as a hardware core made with Vitis HLS~\cite{ug1399} in the FPGA
+fabric.
+
+% ============================================================================
+\section{The Two Versions}
+
+\subsection{Version 1: Brute Force (Memory Size)}
+Version~1 (Listing~\ref{lst:v1}) is the direct method. For every pair of words
+it computes the XOR, counts the 1-bits one at a time with a shift-and-test loop,
+and keeps the smallest count. It always goes through all $N(N-1)/2$ pairs, so
+its time is $O(32N^2)$ whatever the input. On the other hand, it needs only a
+few registers (no \code{malloc}, no library call, no copy of the data), so its
+extra memory is $O(1)$.
+
+\begin{lstlisting}[float=t,caption={min\_hamming\_v1.c (comments shortened)},label={lst:v1}]
+int min_Hamming(unsigned int tab[], unsigned int tab_size) {
+    if (tab_size < 2)          // no pair, no answer
+        return -1;
+    int best = 32;             // words differ in at most 32 bits
+    for (unsigned int i = 0; i < tab_size; i++)
+        for (unsigned int j = i + 1; j < tab_size; j++) {
+            unsigned int diff = tab[i] ^ tab[j]; // 1 = differ
+            int distance = 0;
+            for (int bit = 0; bit < 32; bit++)   // bit by bit
+                if ((diff >> bit) & 1u)
+                    distance++;
+            if (distance < best)
+                best = distance;
+        }
+    return best;
+}
+\end{lstlisting}
+
+\subsection{Version 2: Sort and Search (Processing Time)}
+Version~2 (Listing~\ref{lst:v2}) is based on a simple fact: the answer is
+usually small, and a small distance can be found without trying every pair. So
+it checks the possible answers from the smallest one up:
+\begin{enumerate}
+\item \emph{Distance 0.} It sorts a copy of the array with \code{qsort}. Equal
+  words end up next to each other, and one pass over the copy finds them.
+  Cost: $O(N\log N)$.
+\item \emph{Distance 1.} For every word, it flips each of the 32 bits in turn and
+  looks for the result in the sorted copy with a binary search~\cite{knuth3}. A
+  hit means distance~1. I wrote the search by hand, because \code{bsearch} would
+  call the comparison function through a pointer at every step.
+  Cost: $O(32N\log N)$.
+\item \emph{Distance 2 or more.} It compares all pairs like version~1, but counts
+  the bits with one instruction (GCC turns \code{\_\_builtin\_popcount} into
+  \code{POPCNT}), and it stops at the first pair at distance~2,
+  since nothing smaller is left. The worst case is still $O(N^2)$, but a pair
+  now costs about 8 instructions instead of 267.
+\end{enumerate}
+
+The price is memory. The sorted copy takes $4N$ bytes (I do not sort
+\code{tab[]} itself, since the caller does not expect it to change), and glibc's
+\code{qsort} adds a $4N$-byte merge buffer, so the peak on the PC is $8N$ bytes;
+newlib's \code{qsort} on the ARM sorts in place, so there it is $4N$. If
+\code{malloc} fails, version~2 skips steps 1 and 2 and still returns the right
+answer, only more slowly. Table~\ref{tab:versions} compares the two versions.
+
+\begin{table}[!t]
+\caption{The Two Versions at a Glance ($N$ Words)}
+\label{tab:versions}
+\centering\footnotesize\hbadness=10000
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright}p{1.3cm}>{\raggedright}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+ & \textbf{Version 1} & \textbf{Version 2} \\
+\midrule
+Idea & XOR every pair, count the bits one by one
+     & sort a copy, search the one-bit neighbours, then scan the pairs with an
+       early exit \\
+Time & $O(32N^2)$, always all pairs
+     & $O(N\log N)$ if the answer is 0, $O(32N\log N)$ if it is 1, else $O(N^2)$
+       at worst \\
+Extra memory & $O(1)$, no allocation
+     & $O(N)$: $8N$\,B on the PC, $4N$\,B on the ARM \\
+Cost per pair & 267 instructions (PC), 37 (AVX2 build), about 201 (ARM)
+     & 8 instructions (PC), about 21 (ARM, which has no popcount instruction) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{lstlisting}[float=t,caption={min\_hamming\_v2.c (comments shortened)},label={lst:v2}]
+#include <stdlib.h>   // malloc, free, qsort
+#include <string.h>   // memcpy
+// one POPCNT instruction with gcc -mpopcnt (the file also has
+// a portable bit count for other compilers)
+#define POPCOUNT32(x) __builtin_popcount(x)
+static int compare_words(const void* pa, const void* pb) {
+    unsigned int a = *(const unsigned int*)pa;
+    unsigned int b = *(const unsigned int*)pb;
+    return (a > b) - (a < b);    // a - b could overflow
+}
+int min_Hamming(unsigned int tab[], unsigned int tab_size) {
+    if (tab_size < 2)
+        return -1;
+    int lowest = 0;              // smallest answer still possible
+    unsigned int* sorted =
+        malloc((size_t)tab_size * sizeof(unsigned int));
+    if (sorted != NULL) {        // no memory: skip steps 1 and 2
+        memcpy(sorted, tab, (size_t)tab_size * sizeof(unsigned int));
+        qsort(sorted, tab_size, sizeof(unsigned int), compare_words);
+        // step 1: equal neighbours -> distance 0
+        for (unsigned int i = 0; i + 1 < tab_size; i++)
+            if (sorted[i] == sorted[i + 1]) {
+                free(sorted);
+                return 0;
+            }
+        // step 2: binary search for the 32 one-bit neighbours
+        for (unsigned int i = 0; i < tab_size; i++)
+            for (int bit = 0; bit < 32; bit++) {
+                unsigned int neighbour = sorted[i] ^ (1u << bit);
+                unsigned int lo = 0, hi = tab_size;
+                while (lo < hi) {
+                    unsigned int mid = lo + (hi - lo) / 2;
+                    if (sorted[mid] < neighbour) lo = mid + 1;
+                    else                         hi = mid;
+                }
+                if (lo < tab_size && sorted[lo] == neighbour) {
+                    free(sorted);
+                    return 1;
+                }
+            }
+        free(sorted);
+        lowest = 2;              // no pair at distance 0 or 1
+    }
+    // step 3: all pairs, one-instruction bit count, early exit
+    int best = 32;
+    for (unsigned int i = 0; i < tab_size; i++)
+        for (unsigned int j = i + 1; j < tab_size; j++) {
+            int distance = POPCOUNT32(tab[i] ^ tab[j]);
+            if (distance < best) {
+                best = distance;
+                if (best == lowest)  // nothing smaller is possible
+                    return best;
+            }
+        }
+    return best;
+}
+\end{lstlisting}
+
+% RTL simulation waveforms (Icarus Verilog), made by sim/run_icarus.bat
+\begin{figure*}[!t]
+\centering
+\figorbox{figures/wave_v1}{\textwidth}{4.4cm}{Waveform of the version~1 core:
+  run \code{sim/run\_icarus.bat} (creates \code{figures/wave\_v1.png})}\\[2pt]
+\figorbox{figures/wave_v2}{\textwidth}{4.4cm}{Waveform of the version~2 core:
+  run \code{sim/run\_icarus.bat} (creates \code{figures/wave\_v2.png})}
+\caption{RTL simulation of both HLS cores on main.c's 5,000 words at 100\,MHz
+(Icarus Verilog, drawn from the VCD files). \code{phase}: the running step;
+\code{rows}: rows (version~1) or blocks (version~2) of pairs started;
+\code{RVALID}: words arriving from DDR; \code{latency}: cycles from
+\code{ap\_start} to \code{ap\_done}. Next to the names are the final values; the
+cursor marks \code{ap\_done}.}
+\label{fig:waves}
+\end{figure*}
+
+\subsection{The FPGA Cores}
+For the FPGA, I rewrote both algorithms in C++ for Vitis HLS with the same
+interface. Each core takes up to 8,192 words (what fits on chip) and returns
+$-2$ for more. The version~1 core copies the words from DDR into 16 block-RAM
+banks, then checks 16 pairs per clock, each with an XOR and an adder tree that
+counts the bits, and never stops early. The version~2 core keeps the three steps
+with parts that suit hardware: a 4-pass radix sort~\cite{knuth3} instead of
+\code{qsort}, a 13-level search tree, built twice, that answers 4 look-ups per
+clock, and a pair scan of 64 pairs per clock with an early exit. To feed them,
+it keeps six copies of the input on chip.
+
+% ============================================================================
+\section{Testing and Benchmarks}
+
+\subsection{Benchmark and Tests}
+The same \code{main.c} drives both versions. It runs 6 tests with answers worked
+out by hand (a general case, a duplicate, one bit apart, two bits apart, the
+largest distance and a single word: 4, 0, 1, 2, 32 and $-1$). Then it times one
+call on 5,000 words from the MT19937 generator~\cite{mt19937} with seed 42. Each
+build ran 15 times, and I report the median.
+
+The smallest distance in this array is 2. Three pairs reach it, and the first is
+words 263 and 3,180 (Table~\ref{tab:pair}). Version~1 checks all 12,497,500
+pairs. Version~2 finds no duplicate in step~1 and no one-bit neighbour in
+step~2 (160,000 binary searches), then stops in step~3 after 1,283,201 pairs,
+about 10\,\% of them.
+
+\begin{table}[!t]
+\caption{Closest Pair of the Benchmark Array: Words 263 and 3,180 Differ Only
+in Bits 9 and 4}
+\label{tab:pair}
+\centering\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & \textbf{Hex} & \textbf{Binary, bit 31 \dots{} bit 0} \\
+\midrule
+word 263   & \code{B1437CE0} & \code{1011 0001 0100 0011 0111 11\textbf{0}0 111\textbf{0} 0000} \\
+word 3,180 & \code{B1437EF0} & \code{1011 0001 0100 0011 0111 11\textbf{1}0 111\textbf{1} 0000} \\
+XOR        & \code{00000210} & \code{0000 0000 0000 0000 0000 00\textbf{1}0 000\textbf{1} 0000} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A sweep program (\code{bench.c}) times both versions on 5 sizes (1,000 to 20,000
+words), 7 kinds of input and both builds, 70 measurements in all, on one pinned
+core (median of 3 to 9 calls). Besides main.c's array, the inputs use code words
+of the extended Hamming code [32,\,26,\,4]~\cite{hamming}, where any two words
+differ in at least 4 bits, with one planted pair at distance 0, 1 or 2, or with
+none; then the answer is 4 and version~2 cannot stop early.
+
+Both versions return the same answer on every test and on 20,005 random arrays
+of 0 to 2,500 words. I measured the heap with Valgrind Massif~\cite{valgrind},
+the stack with a painted-stack program (\code{stack2.c}) that runs each call on
+a fresh stack filled with a pattern and counts the bytes that changed, and the
+instructions inside the call with Callgrind.
+
+\subsection{RTL Simulation}
+I also simulated the Verilog that Vitis HLS generated for each core with Icarus
+Verilog~\cite{icarus}, using a testbench (\code{tb\_min\_hamming.v}) that acts
+like the ARM program: it writes the array address, the size and
+\code{ap\_start} over AXI4-Lite~\cite{axi}, serves the core's AXI4 read bursts
+from a memory model holding the same 5,000 words, and polls \code{ap\_done}.
+Fig.~\ref{fig:waves} shows both runs. The version~1 core copies the words in
+(50\,$\mu$s), works through 4,999 rows of pairs and finishes after 895,929
+cycles (8.96\,ms at 100\,MHz). The version~2 core loads
+(50\,$\mu$s), sorts (421\,$\mu$s), builds its tree (50\,$\mu$s) and runs step~2
+(400\,$\mu$s); step~3 then finds a distance-2 pair after 264 blocks, and the
+core finishes after 114,981 cycles (1.150\,ms), as on the board. Both return 2.
+On the board, version~1 took 9.008\,ms because its timer also covers the cache
+flush and the register accesses.
+
+% Vivado block design of version 2 (figures/bd_v2.pdf; a .png also works).
+% Version 1: figures/bd_v1.pdf (same blocks, Zybo Z7-20).
+\begin{figure*}[!t]
+\centering
+\figorbox{figures/bd_v2}{0.78\textwidth}{4.6cm}{Block design:
+  put the screenshot in \code{figures/bd\_v2.png}}
+\caption{Vivado block design of the version~2 system on the ZC702. The version~1
+system on the Zybo Z7-20 has the same blocks and connections.}
+\label{fig:bd}
+\end{figure*}
+
+% ============================================================================
+\section{Platforms and FPGA Deployment}
+
+\emph{PC.} An Intel Core i5-1135G7 (Tiger Lake, up to 4.2\,GHz) running Ubuntu
+24.04 with GCC 13.3, glibc 2.39 and Valgrind 3.22; calls are timed with
+\code{clock\_gettime}. I used two builds: scalar (\code{gcc -O2 -mpopcnt
+-std=c11}) and AVX2 (\code{gcc -O3 -march=native -std=c11}). In the AVX2 build,
+GCC vectorizes the inner loop of version~1, while the early-exit loops of
+version~2 stay scalar.
+
+\emph{Boards.} Version~1 ran on a Zybo Z7-20 and version~2 on a ZC702, both
+with the XC7Z020-1 chip and the same clocks: 666.67\,MHz for the ARM, 533\,MHz
+for the DDR3 and 100\,MHz for the FPGA logic. The ARM code is bare metal
+(standalone BSP, \code{arm-none-eabi-gcc -O2}, newlib), timed with the Cortex-A9
+global timer; the tools were Vitis HLS, Vivado and Vitis 2021.1.
+
+\emph{Block design.} Each core is an IP block next to the Zynq processing
+system~\cite{ug585} (Fig.~\ref{fig:bd}). The ARM drives the core's AXI4-Lite
+registers at \code{0x43C0\_0000} through \code{M\_AXI\_GP0} and an AXI
+Interconnect: start and done at 0x00, the result at 0x10, the array address at
+0x18 and the size at 0x20. The core reads the words itself: its AXI4 master,
+\code{m\_axi\_gmem}, goes through a second interconnect into \code{S\_AXI\_HP0}
+and on to DDR, in bursts. The program flushes the array from the data cache,
+writes the registers, starts the core and polls \code{ap\_done}. Since
+version~2 calls \code{malloc}, its board build reserves a 1\,MB heap
+(\code{-Wl,-{}-defsym=\_HEAP\_SIZE=0x100000}). With the BSP default of 8\,KB,
+\code{malloc} would fail near $N=2{,}048$ and version~2 would lose steps 1 and 2
+(but still answer correctly).
+
+\emph{Board tests.} Version~1 passed 7 tests: main.c's six on both the core and
+the ARM, and an array of 8,193 words that the core rejects with $-2$.
+Version~2 passed 8 tests (the same six, an empty array and 8,193 words) and 300
+random arrays checked against the ARM version with no mismatch
+(Listing~\ref{lst:uart}). Both ARM times in Section~\ref{sec:results} come from
+the version~2 program, which contains both versions; version~1's own program
+measured 2,737.1\,ms.
+
+\begin{lstlisting}[float=t,language={},numbers=none,xleftmargin=0pt,basicstyle=\ttfamily\fontsize{6}{7}\selectfont,caption={UART output of the version 2 board program (excerpt)},label={lst:uart}]
+-- Benchmark: N = 5000 random words (MT19937, seed 42) --
+  ARM version 1 : distance 2, 2699.550 ms
+  ARM version 2 : distance 2, 72.437 ms  (fastest of 5)
+  PL core       : distance 2, 1.150 ms .. 1.151 ms  (10 runs, decided in step 3)
+-- Random regression: 300 arrays, PL core vs ARM version 2 --
+  0 mismatches; decided by step 1: 52, step 2: 69, step 3: 179
+ALL TESTS PASSED
+\end{lstlisting}
+
+% ============================================================================
+\section{Results and Comparison}
+\label{sec:results}
+Table~\ref{tab:score} lists all the results. The estimates come from Vivado's
+power report and the HLS cycle model and are marked as such; the rest were
+measured.
+
+\begin{table}[!t]
+\caption{Scorecard (One Call, 5,000 Words, Unless Noted)}
+\label{tab:score}
+\centering\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}Xrrcr@{}}
+\toprule
+\textbf{Measure} & \textbf{Version 1} & \textbf{Version 2} & \textbf{Better} & \textbf{By} \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Processing time}} \\
+PC, scalar build             & 303.3\,ms   & 5.90\,ms  & V2 & 51$\times$ \\
+PC, AVX2 build               & 34.9\,ms    & 5.98\,ms  & V2 & 5.8$\times$ \\
+ARM Cortex-A9                & 2,699.6\,ms & 72.4\,ms  & V2 & 37$\times$ \\
+FPGA core, 100\,MHz          & 9.008\,ms   & 1.150\,ms & V2 & 7.8$\times$ \\
+PC sweep, 70 cases           & --          & 70 wins   & V2 & 1.34--3,222$\times$ \\
+No pair under 4 bits, PC     & 303.5\,ms   & 10.8\,ms  & V2 & 28$\times$ \\
+PC, duplicate, $N=20{,}000$  & 5,030\,ms   & 1.67\,ms  & V2 & 3,007$\times$ \\
+Instructions, PC scalar      & 3,336.9\,M  & 33.0\,M   & V2 & 101$\times$ \\
+\addlinespace[3pt]
+\multicolumn{5}{@{}l}{\emph{Memory size}} \\
+Extra heap, PC               & 0           & $8N$\,B   & V1 & -- \\
+Stack during the call, PC    & ${<}\,128$\,B & 2,712\,B & V1 & ${>}\,21\times$ \\
+Code, PC                     & 222\,B      & 606\,B + libc & V1 & 2.7$\times$ \\
+Extra heap, ARM              & 0           & $4N$\,B   & V1 & -- \\
+Code and data, ARM           & 128\,B      & 6,810\,B  & V1 & 53$\times$ \\
+FPGA LUTs                    & 2,557       & 11,898    & V1 & 4.7$\times$ \\
+FPGA flip-flops              & 3,328       & 8,314     & V1 & 2.5$\times$ \\
+FPGA block RAM tiles         & 12          & 52.5      & V1 & 4.4$\times$ \\
+On-chip copies of the input  & 32\,KB      & 192\,KB   & V1 & 6.0$\times$ \\
+\addlinespace[3pt]
+\multicolumn{5}{@{}l}{\emph{Time and size together (FPGA cores, estimates)}} \\
+Dynamic power                & 0.090\,W    & 0.331\,W  & V1 & 3.7$\times$ \\
+Energy per call              & 0.81\,mJ    & 0.38\,mJ  & V2 & 2.1$\times$ \\
+Same, no pair under 4 bits   & 0.81\,mJ    & 1.13\,mJ  & V1 & 1.4$\times$ \\
+\addlinespace[3pt]
+Correctness, all tests       & pass        & pass      & tie & -- \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\emph{Processing time: version~2 wins.}
+\begin{itemize}
+\item It is faster everywhere: 51$\times$ on the PC, 5.8$\times$ with AVX2,
+  37$\times$ on the ARM and 7.8$\times$ on the FPGA, with 101$\times$ fewer
+  instructions.
+\item The gap follows the cost of one pair. AVX2 brings version~1 down to 37
+  instructions, and on the ARM, which has no popcount instruction, version~2
+  calls libgcc's \code{\_\_popcountsi2} and needs about 21 against about 201.
+\item It wins all 70 sweep cases (1.34$\times$ to 3,222$\times$), and even with
+  no pair closer than 4 bits, where it cannot stop early, it stays 28$\times$
+  (scalar) and 2.9$\times$ (AVX2) faster.
+\end{itemize}
+
+\emph{Memory size: version~1 wins.}
+\begin{itemize}
+\item PC: no extra heap against $8N$ bytes, under 128\,B of stack against
+  2,712\,B, and 222\,B of code against 606\,B plus \code{qsort}, \code{malloc}
+  and \code{memcpy}.
+\item ARM: no extra heap against $4N$ bytes, and 53$\times$ less code and data
+  with the library code counted (128 against 6,810\,B).
+\item FPGA: 4.7$\times$ fewer LUTs, 2.5$\times$ fewer flip-flops and 4.4$\times$
+  less block RAM. The whole design uses 6.2\,\% of the LUTs instead of
+  23.8\,\%, with more slack at 100\,MHz (+2.952 against +0.672\,ns).
+\end{itemize}
+
+\emph{Time and size together.} Version~2's core draws more power (0.331 against
+0.090\,W, estimate) but finishes 7.8 times sooner, so it needs 2.1 times less
+energy per call (0.38 against 0.81\,mJ) and less LUT-time (13,683 against
+23,033\,LUT$\cdot$ms). With no pair closer than 4 bits this reverses (1.13\,mJ
+and 40,493\,LUT$\cdot$ms, estimate), and version~1 is the more efficient
+circuit, though 2.6 times slower.
+
+\emph{Correctness is a tie:} the same answers on every test, on the boards and
+on 20,005 random arrays.
+
+% ============================================================================
+\section{Conclusion}
+The two versions sit at the two ends of the time--memory trade-off. Version~2
+wins every time measure on every platform, and its lead grows with $N$, since
+its sort and neighbour search grow as $N\log N$ while the pair scan that it
+usually cuts short grows as $N^2$; its memory cost stays a fixed multiple of the
+input. Version~1 wins every memory measure: no heap, a tiny stack, 128\,B of
+code on the ARM and the smallest FPGA core.
+
+I would use version~2 when time matters and the target can spare $O(N)$ memory:
+a PC or application processor, the Zynq ARM with a raised heap, or an FPGA with
+block RAM to spare. Version~1 fits targets with no heap or a few kilobytes of
+RAM, where code size counts, and FPGA designs where area or energy matter more
+than latency and close pairs are rare. Version~2's memory could also come down
+(not built or measured): sorting \code{tab[]} in place, if the caller allows it,
+removes the extra heap, and an in-place sort such as heapsort removes glibc's
+$4N$-byte buffer and most of the stack.
+
+My answer to Problem~1 is version~2. Version~1 remains the right choice when
+memory, not time, is the limit.
+
+% ============================================================================
+\hbadness=10000
+\begin{thebibliography}{9}
+\bibitem{hamming} R.~W. Hamming, ``Error detecting and error correcting codes,''
+  \emph{Bell Syst. Tech. J.}, vol.~29, no.~2, pp.~147--160, Apr. 1950.
+\bibitem{knuth3} D.~E. Knuth, \emph{The Art of Computer Programming, Vol.~3:
+  Sorting and Searching}, 2nd~ed. Reading, MA, USA: Addison-Wesley, 1998.
+\bibitem{mt19937} M.~Matsumoto and T.~Nishimura, ``Mersenne twister: A
+  623-dimensionally equidistributed uniform pseudo-random number generator,''
+  \emph{ACM Trans. Model. Comput. Simul.}, vol.~8, no.~1, pp.~3--30, Jan. 1998.
+\bibitem{valgrind} N.~Nethercote and J.~Seward, ``Valgrind: A framework for
+  heavyweight dynamic binary instrumentation,'' in \emph{Proc. ACM SIGPLAN Conf.
+  Program. Lang. Design Implement. (PLDI)}, 2007, pp.~89--100.
+\bibitem{ug1399} Xilinx, \emph{Vitis High-Level Synthesis User Guide}, UG1399,
+  2021.
+\bibitem{ug585} Xilinx, \emph{Zynq-7000 SoC Technical Reference Manual}, UG585.
+\bibitem{axi} Arm, \emph{AMBA AXI and ACE Protocol Specification}, IHI 0022.
+\bibitem{icarus} S.~Williams, \emph{Icarus Verilog}. [Online]. Available:
+  \url{https://github.com/steveicarus/iverilog}
+\end{thebibliography}
+
+\end{document}

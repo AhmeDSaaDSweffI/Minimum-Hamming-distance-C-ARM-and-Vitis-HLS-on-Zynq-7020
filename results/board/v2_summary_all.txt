@@ -1,0 +1,12 @@
+min_Hamming version 2 HLS core - run results
+date     : 2026-10-11 15:15:05
+command  : ./run_all.sh all
+duration : 968 s
+target   : ZC702 (xc7z020clg484-1), Vitis HLS/Vivado/Vitis 2021.1
+
+hls   PASSED  native 420 cases, 0 failures; csim 218 cases, 0 failures; cosim latency min 73, avg 10127, max 115053 cycles
+hw    PASSED  WNS = 0.672 ns, WHS = 0.042 ns at 100 MHz; 12641 LUTs, 9265 FFs, 52.5 BRAM tiles, 0 DSPs
+sw    PASSED  ELF text 38985, data 2192, bss 1131136 bytes
+run   PASSED  ARM version 1: distance 2, 2699.550 ms; ARM version 2: distance 2, 72.437 ms  (fastest of 5); PL core: distance 2, 1.150 ms .. 1.151 ms  (10 runs, decided in step 3); -- Random regression: 300 arrays, PL core vs ARM version 2 --; 0 mismatches;  decided by step 1: 52, step 2: 69, step 3: 179
+
+RESULT: PASSED

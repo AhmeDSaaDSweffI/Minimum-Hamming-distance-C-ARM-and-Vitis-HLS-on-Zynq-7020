@@ -1,0 +1,9 @@
+min_hamming_hls (version 1 in HLS) - run results
+date     : 2026-10-11 13:37:37
+command  : ./run_all.sh sw
+duration : 60 s
+target   : Zybo Z7-20 (xc7z020clg400-1), Vitis HLS/Vivado/Vitis 2021.1
+
+sw    PASSED  ELF text 28173, data 1144, bss 57872 bytes
+
+RESULT: PASSED

@@ -1,0 +1,27 @@
+
+==== min_Hamming version 2 on the ZC702: ARM vs PL (HLS core) ====
+HLS core at 0x43C00000, MAX_N = 8192 words, idle
+
+-- Correctness tests (main.c), PL core --
+  general case {0x0, 0xF, 0xFF}      expected  4, got  4 (step 3)  OK
+  duplicate {7, 42, 7}               expected  0, got  0 (step 1)  OK
+  one bit {0xA, 0x8, 0xFF00}         expected  1, got  1 (step 2)  OK
+  two bits {0x0, 0x3, 0xF0}          expected  2, got  2 (step 3)  OK
+  max distance {0, 0xFFFFFFFF}       expected 32, got 32 (step 3)  OK
+  single word {123}                  expected -1, got -1 (step 0)  OK
+
+-- Edge cases, PL core --
+  empty array                        expected -1, got -1 (step 0)  OK
+  MAX_N + 1 words (too big)          expected -2, got -2 (step 0)  OK
+
+-- Benchmark: N = 5000 random words (MT19937, seed 42) --
+  ARM version 1 : distance 2, 2699.550 ms
+  ARM version 2 : distance 2, 72.437 ms  (fastest of 5)
+  PL core       : distance 2, 1.150 ms .. 1.151 ms  (10 runs, decided in step 3)
+  speed-up      : PL vs ARM v2 62.9x, PL vs ARM v1 2345.5x
+
+-- Random regression: 300 arrays, PL core vs ARM version 2 --
+  0 mismatches; decided by step 1: 52, step 2: 69, step 3: 179
+
+0 failures
+ALL TESTS PASSED

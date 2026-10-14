@@ -1,0 +1,43 @@
+# Everything below is rebuilt by the scripts in this repository.
+
+# Logs (the measured ones in results/ are kept)
+*.log
+!results/**/*.log
+
+# Vitis HLS projects (run_hls.tcl)
+version_1/hls/proj_min_hamming/
+version_2/hls/build/
+
+# Vivado / Vitis builds and per-run results (run_all.sh, build_hw.tcl, run_sw.tcl)
+version_*/zynq/build/
+version_*/zynq/results/
+version_*/zynq/system_bd.pdf
+.Xil/
+*.jou
+*.str
+
+# PC builds and profiler output
+version_1/ham_v1
+version_2/ham_v2
+*.o
+callgrind.out.*
+massif.out.*
+
+# RTL simulation (run_icarus.bat, run_waves.do)
+sim/*.vcd
+sim/*.vvp
+sim/files_v*.txt
+sim/work_v*/
+sim/transcript
+sim/modelsim.ini
+sim/results.txt
+sim/*.wlf
+
+# LaTeX build files and the Overleaf zip
+report/*.aux
+report/*.out
+report/*.synctex.gz
+report/overleaf_project.zip
+
+# Python
+__pycache__/

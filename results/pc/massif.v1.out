@@ -1,0 +1,931 @@
+desc: --stacks=yes --peak-inaccuracy=0.0 --massif-out-file=massif.v1.out
+cmd: ./ham_v1
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=1140
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=368
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=37019
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=312
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=39095
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=656
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=42020
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=656
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=44040
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=512
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=46943
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1312
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=48159
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1104
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=49981
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=6720
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=9
+#-----------
+time=51267
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=7680
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=10
+#-----------
+time=52821
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=6640
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=55054
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=7032
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=56500
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=4200
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=58919
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=4264
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=60641
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=4952
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=62503
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=2472
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=65441
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1360
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=67374
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1336
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=68865
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1000
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=78975
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=80616
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=82467
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=85376
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=87838
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1872
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=89102
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1872
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=25
+#-----------
+time=91443
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1584
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=92933
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=27
+#-----------
+time=95851
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=98623
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=100489
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1872
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=30
+#-----------
+time=102153
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=103814
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=105596
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1624
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=107728
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=110524
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=111993
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=114089
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=116351
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=119172
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1584
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=121270
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=124296
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1880
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=127219
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=129660
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=131327
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=132942
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=134642
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=136356
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=138003
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=140746
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=143032
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1624
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=144297
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1624
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=145440
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1368
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=146590
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1624
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=147856
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1624
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=149218
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=150580
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1624
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=151796
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=152942
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1584
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=154085
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1864
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=59
+#-----------
+time=155440
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=156694
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1528
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=157855
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1368
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=159048
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1768
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=160314
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1024
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=161456
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1736
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=162688
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1624
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=163840
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1584
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=164981
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=1368
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=166129
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=88
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=69
+#-----------
+time=167298
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=1240
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=168441
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=1304
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=169702
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=2344
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=170847
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=2392
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=172099
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=528
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=173264
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=2344
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=174840
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=528
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=176015
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=2344
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=177591
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=528
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=178766
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=2344
+heap_tree=detailed
+n1: 1024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=79
+#-----------
+time=179930
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=1016
+heap_tree=empty
+#-----------
+snapshot=80
+#-----------
+time=181087
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=2336
+heap_tree=empty
+#-----------
+snapshot=81
+#-----------
+time=182232
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=2344
+heap_tree=empty
+#-----------
+snapshot=82
+#-----------
+time=183391
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=1192
+heap_tree=empty
+#-----------
+snapshot=83
+#-----------
+time=183633
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=544
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=84
+#-----------
+time=484001
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=456
+heap_tree=empty
+#-----------
+snapshot=85
+#-----------
+time=468129456
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=496
+heap_tree=empty
+#-----------
+snapshot=86
+#-----------
+time=468129583
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=984
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=87
+#-----------
+time=468129639
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=2312
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=88
+#-----------
+time=468129685
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=2360
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=89
+#-----------
+time=468130576
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=2568
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=90
+#-----------
+time=468130659
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=2936
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=91
+#-----------
+time=468130759
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=3080
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=92
+#-----------
+time=468131060
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=3232
+heap_tree=detailed
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=93
+#-----------
+time=468131352
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=3296
+heap_tree=peak
+n2: 21024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 20000 0x109321: main (main.c:105)
+ n1: 1024 0x48E7294: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7603: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F506F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
+    n1: 1024 0x48F5B8E: _IO_new_file_xsputn (fileops.c:1244)
+     n1: 1024 0x48F5B8E: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
+      n1: 1024 0x48C2CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
+       n1: 1024 0x48C2CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
+        n1: 1024 0x48CD742: __vfprintf_internal (vfprintf-internal.c:1545)
+         n1: 1024 0x4999C9C: __printf_chk (printf_chk.c:33)
+          n1: 1024 0x10920C: printf (stdio2.h:86)
+           n0: 1024 0x10920C: main (main.c:86)
+#-----------
+snapshot=94
+#-----------
+time=468132515
+mem_heap_B=21024
+mem_heap_extra_B=16
+mem_stacks_B=1128
+heap_tree=empty
+#-----------
+snapshot=95
+#-----------
+time=468133659
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=568
+heap_tree=empty
+#-----------
+snapshot=96
+#-----------
+time=468134880
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=760
+heap_tree=empty
+#-----------
+snapshot=97
+#-----------
+time=468136020
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=560
+heap_tree=empty
+#-----------
+snapshot=98
+#-----------
+time=468137160
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=512
+heap_tree=empty

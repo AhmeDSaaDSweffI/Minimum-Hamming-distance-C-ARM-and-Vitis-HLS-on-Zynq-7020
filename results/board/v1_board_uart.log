@@ -1,0 +1,20 @@
+
+==== min_hamming_hls (version 1 in HLS) test, Zybo Z7-20 ====
+Accelerator at 0x43C00000, CTRL = 0x4
+
+-- Correctness tests (PL accelerator and ARM software v1) --
+  general case {0x0, 0xF, 0xFF}: expected 4, PL 4, ARM 4  OK
+  duplicate {7, 42, 7}: expected 0, PL 0, ARM 0  OK
+  one bit {0xA, 0x8, 0xFF00}: expected 1, PL 1, ARM 1  OK
+  two bits {0x0, 0x3, 0xF0}: expected 2, PL 2, ARM 2  OK
+  max distance {0, 0xFFFFFFFF}: expected 32, PL 32, ARM 32  OK
+  single word {123}: expected -1, PL -1, ARM -1  OK
+  too many words (8193): expected -2, PL -2  OK
+
+-- Benchmark: N = 5000 random words (MT19937, seed 42) --
+  PL accelerator  (HLS, 16 pairs/clock, 100 MHz): distance 2, 9008 us
+  ARM software v1 (Cortex-A9):                distance 2, 2737060 us
+  speed-up       : 303.8 x
+
+0 failures
+ALL TESTS PASSED

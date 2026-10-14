@@ -1,0 +1,41 @@
+INFO: [SIM 2] *************** CSIM start ***************
+INFO: [SIM 4] CSIM will launch GCC as the compiler.
+   Compiling(apcc) ../../../../../../min_hamming_v2.c in release mode
+INFO: Applying HLS Y2K22 patch v1.2 for IP revision
+INFO: [HLS 200-10] Running '/tools/Xilinx/Vitis_HLS/2021.1/bin/unwrapped/lnx64.o/apcc'
+INFO: [HLS 200-10] For user 'saad' on host 'saad-HP-Laptop-15-dw3xxx' (Linux_x86_64 version 7.0.0-38-generic) on Sun Oct 11 15:15:56 EEST 2026
+INFO: [HLS 200-10] On os Ubuntu 24.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/saad/polyyyyyyy/problem1/version_2/hls/build/min_hamming_hls/sol/csim/build'
+INFO: [APCC 202-1] APCC is done.
+   Compiling ../../../../../tb_min_hamming_hls.cpp in release mode
+   Compiling ../../../../../min_hamming_hls.cpp in release mode
+   Generating csim.exe
+min_hamming_hls testbench (standard): MAX_N=8192, LANES=64, LOOKUPS=4
+Correctness tests (main.c):
+  general case {0x0, 0xF, 0xFF}          n=3     expected  4, core  4 (step 3), software  4  OK
+  duplicate {7, 42, 7}                   n=3     expected  0, core  0 (step 1), software  0  OK
+  one bit {0xA, 0x8, 0xFF00}             n=3     expected  1, core  1 (step 2), software  1  OK
+  two bits {0x0, 0x3, 0xF0}              n=3     expected  2, core  2 (step 3), software  2  OK
+  max distance {0, 0xFFFFFFFF}           n=2     expected 32, core 32 (step 3), software 32  OK
+  single word {123}                      n=1     expected -1, core -1 (step 0), software -1  OK
+Benchmark array:
+  N = 5000, MT19937 seed 42              n=5000  expected  2, core  2 (step 3), software  2  OK
+Edge cases:
+  empty array                            n=0     expected -1, core -1 (step 0), software -1  OK
+  MAX_N + 1 words (too big for the core) n=8193  expected -2, core -2 (step 0), software -2  OK
+  bit 31 only {0x80000000, 0}            n=2     expected  1, core  1 (step 2), software  1  OK
+  descending 1000..981 (distance 1)      n=20    expected  1, core  1 (step 2), software  1  OK
+  40 random words                        n=40    expected  7, core  7 (step 3), software  7  OK
+  40 random words + duplicate            n=40    expected  0, core  0 (step 1), software  0  OK
+  100 random words + 2-bit pair          n=100   expected  2, core  2 (step 3), software  2  OK
+  MAX_N equal words                      n=8192  expected  0, core  0 (step 1), software  0  OK
+  MAX_N multiples of 3                   n=8192  expected  2, core  2 (step 3), software  2  OK
+  MAX_N random + 1-bit pair              n=8192  expected  1, core  1 (step 2), software  1  OK
+  MAX_N, 1-bit pair at the largest word  n=8192  expected  1, core  1 (step 2), software  1  OK
+Random regression:
+  200 random cases run
+
+218 cases, 0 failures; decided by step 1: 25, step 2: 56, step 3: 134
+ALL TESTS PASSED
+INFO: [SIM 1] CSim done with 0 errors.
+INFO: [SIM 3] *************** CSIM finish ***************

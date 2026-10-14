@@ -1,0 +1,9 @@
+# version 1 and version 2, both built with: gcc -O3 -march=native -mno-avx512f -g -std=c11 main.c min_hamming_vN.c
+# time: median of 5 runs of the min_Hamming call (main.c's clock_gettime), ms
+# heap: Massif peak heap, bytes (includes the 4,096 B stdout buffer of printf)
+     N answer      v1_ms      v2_ms    v1/v2    v1_heap    v2_heap
+  1000      3      2.134      1.574     1.4x       8096      16096
+  2000      3      6.767      3.800     1.8x      12096      28096
+  5000      2     37.190      6.288     5.9x      24096      64096
+ 10000      2    139.268     12.052    11.6x      44096     124096
+ 20000      0    579.334      2.016   287.4x      84096     244096

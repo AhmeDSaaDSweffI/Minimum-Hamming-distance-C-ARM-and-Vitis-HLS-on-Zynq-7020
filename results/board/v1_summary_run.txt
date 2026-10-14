@@ -1,0 +1,9 @@
+min_hamming_hls (version 1 in HLS) - run results
+date     : 2026-10-11 13:38:47
+command  : ./run_all.sh run
+duration : 23 s
+target   : Zybo Z7-20 (xc7z020clg400-1), Vitis HLS/Vivado/Vitis 2021.1
+
+run   PASSED  -- Correctness tests (PL accelerator and ARM software v1) --; PL accelerator (HLS, 16 pairs/clock, 100 MHz): distance 2, 9008 us; ARM software v1 (Cortex-A9): distance 2, 2737060 us; speed-up : 303.8 x; 0 failures
+
+RESULT: PASSED
