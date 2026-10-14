@@ -378,13 +378,6 @@ python3 plot_waves.py   # ../report/figures/wave_v1.png and wave_v2.png
 Each run prints a `RESULT` line (answer, latency, rows) and `TEST PASSED`. The
 VCD files can also be opened in GTKWave.
 
-### Report
-
-[`report/min_hamming_report.tex`](report/min_hamming_report.tex) is a 4-page
-IEEE conference paper (IEEEtran). Upload the `.tex` file and the `figures/`
-folder to Overleaf (compiler: pdfLaTeX), or run `pdflatex` twice in `report/`.
-On Windows, `report/make_overleaf_zip.ps1` packs both into
-`overleaf_project.zip`.
 
 ## Tools
 
